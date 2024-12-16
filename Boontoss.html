@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spin Game</title>
+  <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-firestore.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #000;
+      color: white;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: #39393a;
+      color: #fff;
+    }
+
+    .header h2 {
+      margin: 0;
+    }
+
+    .balance-display {
+      padding: 5px 15px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 5px;
+      color: #fff;
+      font-weight:800;
+    }
+
+    .game-container {
+      margin: 20px auto;
+      width: 300px;
+      padding: 20px;
+      background: #39393a;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px gold;
+      text-align: center;
+      color: #fff;
+    }
+
+   
+
+    .coin-container {
+      position: relative;
+      margin: 30px auto;
+      width: 150px;
+      height: 150px;
+    }
+
+    .coin {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle, gold, #f2c94c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: black;
+      font-size: 1.5em;
+      font-weight: bold;
+      position: absolute;
+      backface-visibility: hidden;
+    }
+
+    .coin.heads {
+      background: radial-gradient(circle, gold, #f2c94c);
+    }
+
+    .coin.tails {
+      background: radial-gradient(circle, silver, #c0c0c0);
+      transform: rotateY(180deg);
+    }
+
+    .coin-flip {
+      animation: flip 2s ease-out forwards;
+    }
+
+    @keyframes flip {
+      0% { transform: rotateY(0); }
+      25% { transform: rotateY(360deg); }
+      50% { transform: rotateY(720deg); }
+      75% { transform: rotateY(1080deg); }
+      100% { transform: rotateY(var(--final-rotation)); }}
+      
+    .controls {
+      margin: 20px 0;
+    }
+
+    .entry-fee-button, .card {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 5px;
+      margin-top: 40px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-weight: bold;
+    }
+
+    .entry-fee-button {
+      background-color: gold;
+      border: 1px solid gold;
+      color: #111;
+    }
+
+    .entry-fee-button.selected {
+      background-color: #20c0f3;
+      color: white;
+    }
+
+    .card {
+      color: white;
+    }
+
+    .card[data-value="up"] {
+      background-color: red;
+    }
+
+    .card[data-value="down"] {
+      background-color: Blue;
+    }
+
+    .custom-alert {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      background: white;
+      color: black;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      text-align: center;
+      z-index: 1000;
+    }
+    #entry-fee {
+      padding: 10px 15px;
+
+      border: 2px solid gold;
+      border-radius: 8px;
+      
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+      background-color: gold;
+      color: #111;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .controls button:hover {
+      background-color: #0056b3;
+    }
+
+    #restart-button {
+      display: none;
+      background-color: #28a745;
+    }
+
+    #restart-button:hover {
+      background-color: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>Coin Toss Game</h2>
+    <div class="balance-display">💰: <span id="balance-display">0</span></div>
+  </div>
+  <div class="game-container">
+    <div id="user-info">Loading...</div>
+    <div class="coin-container">
+      <div class="coin heads" id="heads-side">Heads</div>
+      <div class="coin tails" id="tails-side">Tails</div>
+    </div>
+        <div>
+    <div class="controls">
+ 
+      <input id="entry-fee" type="number" placeholder="Enter Amount">
+      <div>
+      <button id="guess-heads">Guess Heads</button>
+      <button id="guess-tails">Guess Tails</button>
+      </div>
+          <button id="restart-button">Restart</button>
+    </div>
+    
+      
+  </div>
+
+
+ <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAtVvPjdsj84mWqaG4-7SyjbljCnslZ1SM",
+      authDomain: "hendaa-1.firebaseapp.com",
+      projectId: "hendaa-1",
+      storageBucket: "hendaa-1.appspot.com",
+      messagingSenderId: "831134776479",
+      appId: "1:831134776479:web:56cd7098fc69cd70a376aa"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let user = null;
+    let balance = 0;
+    const balanceDisplay = document.getElementById('balance-display');
+    const entryFeeInput = document.getElementById('entry-fee');
+    const headsSide = document.getElementById('heads-side');
+    const tailsSide = document.getElementById('tails-side');
+    const restartButton = document.getElementById('restart-button');
+    const userInfo = document.getElementById('user-info');
+
+    // User Authentication and Data Fetching
+    auth.onAuthStateChanged(async (u) => {
+      if (u) {
+        user = u;
+        const doc = await db.collection('users').doc(user.uid).get();
+        if (doc.exists) {
+          balance = doc.data().balance || 0;
+          balanceDisplay.textContent = balance;
+          userInfo.textContent = `Welcome, ${user.displayName || 'Player'}`;
+        } else {
+          alert("User data not found.");
+        }
+      } else {
+        alert("Please log in to play.");
+        window.location.href = "login.html";
+      }
+    });
+
+    document.getElementById('guess-heads').addEventListener('click', () => playGame('heads'));
+    document.getElementById('guess-tails').addEventListener('click', () => playGame('tails'));
+
+    async function playGame(guess) {
+      const entryFee = parseInt(entryFeeInput.value);
+      if (!entryFee || entryFee <= 0) {
+        alert("Please enter a valid entry fee.");
+        return;
+      }
+      if (balance < entryFee) {
+        alert("Insufficient balance!");
+        return;
+      }
+
+      // Deduct entry fee and show the toss animation
+      balance -= entryFee;
+      updateBalance();
+
+      const result = Math.random() < 0.5 ? 'heads' : 'tails';
+      const finalRotation = result === 'heads' ? '0deg' : '180deg';
+      document.documentElement.style.setProperty('--final-rotation', finalRotation);
+
+      headsSide.parentNode.classList.add('coin-flip');
+
+      // Wait for animation to finish before showing result
+      setTimeout(() => {
+        headsSide.parentNode.classList.remove('coin-flip');
+
+        // Show result on the coin
+        if (result === 'heads') {
+          headsSide.style.transform = 'rotateY(0deg)';
+          tailsSide.style.transform = 'rotateY(180deg)';
+        } else {
+          tailsSide.style.transform = 'rotateY(0deg)';
+          headsSide.style.transform = 'rotateY(180deg)';
+        }
+
+        // Pause for 1 second before displaying result alert
+        setTimeout(() => {
+          const win = guess === result;
+          const winnings = win ? entryFee * 2 : 0;
+          balance += winnings;
+          updateBalance();
+
+          alert(`The result is ${result}. You ${win ? 'won' : 'lost'}!`);
+          logGame(entryFee, guess, result, win);
+          restartButton.style.display = "inline-block";
+        }, 1000);
+      }, 2000); // Wait for the flip animation to finish (2s)
+    }
+
+    restartButton.addEventListener('click', () => window.location.reload());
+
+    async function updateBalance() {
+      await db.collection('users').doc(user.uid).update({ balance });
+      balanceDisplay.textContent = balance;
+    }
+
+    async function logGame(entryFee, guess, result, win) {
+      await db.collection('users').doc(user.uid).update({
+        history: firebase.firestore.FieldValue.arrayUnion({
+          game: "Coin Toss",
+          entryFee,
+          guess,
+          result,
+          win,
+          date: new Date().toISOString()
+        })
+      });
+    }
+  </script>
+</body>
+</html>
