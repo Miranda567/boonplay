@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game UI</title>
+    <!-- Include Font Awesome Icons from Cloudflare CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+                         background-color: hsla(165, 77%, 17%, 0.1);
+
+            color: #000;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        a {
+          text-decoration: none;
+          color: black;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            width: 90%;
+            
+            padding: 15px;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #111;
+        }
+
+        .top-bar i {
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 10px;
+            
+        }
+
+        .top-bar .title {
+            text-align: center;
+            flex-grow: 1;
+            font-weight: 300;
+            color: black;
+            font-size: 20px;
+    
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: -250px;
+            top: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #ffff;
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+                .sidebar a {
+            padding: 10px 15px;
+            display: block;
+            color: #111;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+        .sidebar a:hover {
+            background-color: #36475a;
+        }
+
+        .sidebar .close-btn {
+            align-self: flex-end;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        /* User Info */
+        .user-info {
+            text-align: center;
+            margin-top: 10px;
+        }
+.user-info p {
+  font-size: 18px;
+  font-weight: bolder;
+  color: red;
+  font-style: italic;
+}
+        .user-info .username {
+            font-size: 1.2em;
+          
+            margin-right: 10px;
+            color: #fff;
+            background: #125;
+            border-radius: 15px;
+          padding: 5px 5px;
+        }
+
+        .user-info .premium-badge {
+            background-color: #fff;
+            color: #000;
+            padding: 5px 5px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin-left: 55px;
+        }
+
+        /* Balance and Rating Boxes */
+        .balance-rating {
+            display: flex;
+            width: 90%;
+            margin: 40px 0;
+            justify-content: space-around;
+            gap: 10px;
+        }
+
+        .balance-box, .rating-box {
+            background-color: #fff;
+            width: 45%;
+            padding: 10px;
+          
+            text-align: center;
+            font-size: 1.1em;
+            position: relative;
+        }
+
+        .balance-box i, .rating-box i {
+            font-size: 1.5em;
+            color: hsl(165, 77%, 17%);
+        }
+
+        .balance-box .value, .rating-box .value {
+            font-size: 1.3em;
+            font-weight: bold;
+            display: block;
+            margin-top: 5px;
+        }
+        .button-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 60px;
+            margin-top: 20px;
+        }
+
+        .button-grid button {
+            width: 120px;
+            height: 120px;
+            background-color: #4a90e2;
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+          
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button-grid button:hover {
+            background-color: #ccc;
+        }
+
+        .button-grid button i {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        /* Grid of Options */
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 90%;
+            margin-top: 10px;
+        }
+
+        .option-box {
+            background-color: #fff;
+            padding: 10px;
+            text-align: center;
+          
+            border: 1px solid #f9f2e8;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .option-box:hover {
+            background-color: #cccccc;
+        }
+
+        .option-box i {
+            font-size: 2em;
+            color: hsl(165, 77%, 17%);
+        }
+
+        .option-box span {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+
+        .option-box .badge {
+            background-color: #f3c05d;
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-size: 0.7em;
+            margin-top: 5px;
+        }
+
+        /* Footer Navigation */
+        .footer {
+            width: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            z-index: 500;
+        }
+
+        .footer a {
+            color: #111;
+            text-align: center;
+            font-size: 0.9em;
+            text-decoration: none;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer a i {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            color: #111;
+        }
+
+        /* Overlay for sidebar */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 900;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .option-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <i class="fas fa-times close-btn" id="closeSidebar"></i>
+        <h2>Menu</h2>
+        <a href="#">Dashboard</a>
+        <a href="#">Profile</a>
+        <a href="#">Settings</a>
+        <a href="#" id="logout-button">Logout</a>
+  
+    </div>
+
+    <!-- Overlay for Sidebar -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <i class="fas fa-bars" id="openSidebar"></i>
+        <div class="title">BoonPlay</div>
+        <i class="fas fa-bell notification-icon"></i>
+    </div>
+
+    <!-- User Info -->
+
+  
+    <!-- Balance and Rating Boxes -->
+    <div class="balance-rating">
+        <div class="balance-box">
+            <i class="fas fa-coins"></i>
+            <div class="value" id="user-balance">0.00</div>
+            <span>Balance</span>
+        </div>
+
+    </div>
+
+    <!-- Options Grid -->
+    <div class="option-grid">
+              <a href="boongames.html">  <div class="option-box">
+            <i class="fas fa-trophy"></i>
+            <span>Games</span>
+        </div></a>
+        <div class="option-box" id="claim-bonus">
+            <i class="fas fa-money-bill-wave"></i>
+            <span> Claim Daily Bonus</span>
+        </div>
+        <a href="boon-earn.html"><div class="option-box">
+            <i class="fas fa-medal"></i>
+            <span>Offers</span>
+        </div></a>
+        <div class="option-box">
+            <i class="fas fa-dice"></i>
+            <span>Boon Spin</span>
+        </div>
+        <div class="option-box">
+            <i class="fas fa-globe"></i>
+            <span>Boon puzzle</span>
+        </div>
+        <div class="option-box">
+            <i class="fas fa-gem"></i>
+            <span>Auction</span>
+            <span class="badge">02:00:58</span>
+        </div>
+
+        
+    </div>
+<div class="button-grid">
+        <button onclick="navigateTo('2vs2')">
+            <i class="fas fa-users"></i>
+            <span>2 vs 2</span>
+        </button>
+        <button style="background-color: #f95b42;" onclick="navigateTo('local')">
+            <i class="fas fa-user-friends"></i>
+            <span>Local</span>
+        </button>
+        <button style="background-color: #ffd700;" onclick="navigateTo('online')">
+            <i class="fas fa-globe"></i>
+            <span>Online</span>
+        </button>
+        <button style="background-color: #8e44ad;" onclick="navigateTo('friends')">
+            <i class="fas fa-gift"></i>
+            <span>Friends</span>
+        </button>
+    </div>
+
+    <!-- Footer Navigation -->
+    <div class="footer">
+        <a href="liquid.html">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="akpi.html">
+            <i class="fas fa-dice"></i>
+            <span>Earn</span>
+        </a>
+        <a href="#">
+            <i class="fas fa-user"></i>
+            <span>Games</span>
+        </a>
+        <a href="#">
+            <i class="fas fa-gift"></i>
+            <span>Redeem</span>
+        </a>
+        <a href="#">
+            <i class="fas fa-cogs"></i>
+            <span>Profile</span>
+        </a>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const openSidebar = document.getElementById('openSidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+
+        // Function to open sidebar
+        function openSideMenu() {
+            sidebar.classList.add('open');
+            overlay.classList.add('active');
+        }
+
+        // Function to close sidebar
+        function closeSideMenu() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+
+        // Event listeners
+        openSidebar.addEventListener('click', openSideMenu);
+        closeSidebar.addEventListener('click', closeSideMenu);
+        overlay.addEventListener('click', closeSideMenu);
+
+        // Close sidebar when clicking outside of it
+        document.addEventListener('click', (event) => {
+            if (!sidebar.contains(event.target) && !openSidebar.contains(event.target)) {
+                closeSideMenu();
+            }
+        });
+    </script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-firestore.js"></script>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAtVvPjdsj84mWqaG4-7SyjbljCnslZ1SM",
+      authDomain: "hendaa-1.firebaseapp.com",
+      projectId: "hendaa-1",
+      storageBucket: "hendaa-1.appspot.com",
+      messagingSenderId: "831134776479",
+      appId: "1:831134776479:web:56cd7098fc69cd70a376aa"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Retrieve User Info and Balance
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const userId = user.uid;
+
+
+        // Show user info on the page
+
+        // Check if balance exists in Firestore
+        const userDocRef = db.collection("users").doc(userId);
+        userDocRef.get().then((doc) => {
+          if (doc.exists) {
+            // Show existing balance
+            document.getElementById("user-balance").textContent = doc.data().balance || 0;
+          } else {
+            // Initialize new user balance as 0
+            userDocRef.set({ balance: 0, lastClaimed: null }, { merge: true });
+          }
+        }).catch((error) => {
+          console.error("Error fetching balance:", error);
+        });
+
+        // Claim Daily Bonus
+        document.getElementById("claim-bonus").addEventListener("click", () => {
+          userDocRef.get().then((doc) => {
+            if (doc.exists) {
+              const userData = doc.data();
+              const lastClaimed = userData.lastClaimed ? new Date(userData.lastClaimed) : null;
+              const now = new Date();
+
+              if (!lastClaimed || now - lastClaimed > 24 * 60 * 60 * 1000) {
+                // Update balance and set lastClaimed
+                const newBalance = (userData.balance || 0) + 20;
+                userDocRef.update({
+                  balance: newBalance,
+                  lastClaimed: now.toISOString()
+                }).then(() => {
+                  document.getElementById("user-balance").textContent = newBalance;
+                  alert("You have successfully claimed your daily bonus of $20!");
+                });
+              } else {
+                alert("You have already claimed your bonus today. Come back tomorrow!");
+              }
+            }
+          }).catch((error) => {
+            console.error("Error claiming bonus:", error);
+          });
+        });
+      } else {
+        // Redirect to login if no user is logged in
+        alert("You are not logged in! Redirecting to login page...");
+        window.location.href = "login.html";
+      }
+    });
+
+    // Logout Functionality
+    document.getElementById("logout-button").addEventListener("click", () => {
+      auth.signOut()
+        .then(() => {
+          alert("Logged out successfully!");
+          window.location.href = "login.html";
+        })
+        .catch((error) => {
+          console.error("Logout error:", error);
+        });
+    });
+  </script>
+
+</body>
+</html>
