@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SB Rewards Shop Page</title>
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+      a {
+        text-decoration: none;
+      }
+        body {
+            background-color: hsla(165, 77%, 17%, 0.1);
+            color: #333;
+        }
+        .header {
+            background-color: hsl(165, 77%, 17%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header .balance {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header .balance span {
+            background-color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: hsl(38, 100%, 50%);
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .header i {
+            font-size: 24px;
+        }
+        .section {
+            padding: 20px;
+            text-align: center;
+        }
+        .section-title {
+            color: #007E8A;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .shop-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .shop-item {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 150px;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+          
+        }
+        .shop-item img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .shop-item .title {
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0 5px;
+      
+    
+        }
+        .shop-item .description {
+            color: #777;
+            font-size: 12px;
+        }
+        .shop-item .reward {
+            font-weight: bold;
+            color: #00A859;
+            margin: 10px 0;
+        }
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            background-color: #E9F5F5;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            
+            max-width: 500px;
+        }
+        .footer div {
+            text-align: center;
+            font-size: 14px;
+            color: gray;
+        
+        }
+                            .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  align-items: center;
+  margin-top: 500px;
+    background-color: #fff; /* Light gray background color */
+    display: flex;
+    justify-content: space-around;
+    padding: 5px 0;
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    z-index: 1000; /* Ensure the navigation is on top of other content */
+  }
+
+  /* Bottom navigation item style */
+  .nav-item {
+    text-align: center;
+    flex-grow: 1;
+    padding: 5px 0;
+    font-size: 12px;
+    color: #356e98; /* Default color for icons */
+    text-decoration: none;
+  }
+  
+
+  /* Bottom navigation item icon style */
+  .nav-item i {
+    font-size: 24px; /* Adjust icon size as needed */
+  }
+
+  /* Active item style */
+  .actives {
+    color: #fff; 
+    background: #356e98;
+    border-radius: 5px;
+    padding: 5px 2px;
+    margin: 2px;
+    /* Blue color for active item */
+  }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="balance">
+            <span id="user-balance">0 BNT</span>
+        </div>
+
+    </div>
+
+    <!-- Section Content -->
+    <div class="section">
+        <h2 class="section-title">Earn</h2>
+        <p style="margin-bottom:15px;">Start a task to earn BNT.</p>
+        <div class="shop-items">
+
+        <div class="shop-items">
+            <div class="shop-item">
+                <img src="boonnews.png" alt="Slots of Vegas">
+                               <a href="#"> <div class="title">Boon News</div></a>
+                <div class="description">Read News earn up to 100 BNT Daily!</div>
+                <a href="#"><div class="reward">Explore News</div></a>
+            </div>
+            <div class="shop-item">
+                <img src="boonmusic.png" alt="Search and Earn">
+                                <a href="#"><div class="title">Music Download 
+                            </div></a>
+                <div class="description">Earn 10 BNT per Music Download</div>
+                                <a href="#"><div class="reward">Music Store</div></a>
+            </div>
+            <div class="shop-item">
+                <img src="chipper.png" alt="Coinbase">
+                <div class="title">Chipper Cash</div>
+                <div class="description">Earn Up to 1,500 BNT. Sign Up using link Below</div>
+               <a href="https://chipper.cash/invite/4IZWT" target="_blank"><div class="reward">Sign Up On Chipper Cash </div></a>
+            </div>
+            <div class="shop-item">
+                <img src="luno.png" alt="Example Store">
+                <div class="title">Luno </div>
+                <div class="description"> Earn up to 2500 BNT. Sign up using  link below.</div>
+
+
+  
+<a href="https://www.luno.com/invite/P94473" target="_blank">
+<div class="reward">Sign Up on Luno </div></a>
+            </div>
+            <div class="shop-item">
+                <img src="opay.jpg" alt="Prime Video">
+                <div class="title">Opay Bank</div>
+                <div class="description">Earn Up to 2500 BNT. Sign Up using link below</div>
+                    <a href="https://opay.ng/s/1cjEs" target="_blank"><div class="reward">Sign Up Opay</div></a>
+            </div>
+            <div class="shop-item">
+                <img src="kudaone.jpg" alt="Prime Video">
+                <div class="title">Kuda MFB</div>
+                <div class="description">Earn Up to 2000 BNT. Sign Up using link below</div>
+                <div class="reward">Sign Up Kuda</div>
+            </div>
+           
+        </div>
+    </div>
+      
+  
+    <!-- Footer -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-firestore.js"></script>
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAtVvPjdsj84mWqaG4-7SyjbljCnslZ1SM",
+      authDomain: "hendaa-1.firebaseapp.com",
+      projectId: "hendaa-1",
+      storageBucket: "hendaa-1.appspot.com",
+      messagingSenderId: "831134776479",
+      appId: "1:831134776479:web:56cd7098fc69cd70a376aa"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Retrieve User Info and Balance
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const userId = user.uid;
+        const displayName = user.displayName || "User";
+        const email = user.email;
+
+        // Show user info on the page
+        document.getElementById("user-name").textContent = `Name: ${displayName}`;
+        document.getElementById("user-email").textContent = `Email: ${email}`;
+
+        // Check if balance exists in Firestore
+        const userDocRef = db.collection("users").doc(userId);
+        userDocRef.get().then((doc) => {
+          if (doc.exists) {
+            // Show existing balance
+            document.getElementById("user-balance").textContent = doc.data().balance || 0;
+          } else {
+            // Initialize new user balance as 0
+            userDocRef.set({ balance: 0, lastClaimed: null }, { merge: true });
+          }
+        }).catch((error) => {
+          console.error("Error fetching balance:", error);
+        });
+
+        // Claim Daily Bonus
+        document.getElementById("claim-bonus").addEventListener("click", () => {
+          userDocRef.get().then((doc) => {
+            if (doc.exists) {
+              const userData = doc.data();
+              const lastClaimed = userData.lastClaimed ? new Date(userData.lastClaimed) : null;
+              const now = new Date();
+
+              if (!lastClaimed || now - lastClaimed > 24 * 60 * 60 * 1000) {
+                // Update balance and set lastClaimed
+                const newBalance = (userData.balance || 0) + 20;
+                userDocRef.update({
+                  balance: newBalance,
+                  lastClaimed: now.toISOString()
+                }).then(() => {
+                  document.getElementById("user-balance").textContent = newBalance;
+                  alert("You have successfully claimed your daily bonus of $20!");
+                });
+              } else {
+                alert("You have already claimed your bonus today. Come back tomorrow!");
+              }
+            }
+          }).catch((error) => {
+            console.error("Error claiming bonus:", error);
+          });
+        });
+      } else {
+        // Redirect to login if no user is logged in
+        alert("You are not logged in! Redirecting to login page...");
+        window.location.href = "login.html";
+      }
+    });
+
+    // Logout Functionality
+    document.getElementById("logout-button").addEventListener("click", () => {
+      auth.signOut()
+        .then(() => {
+          alert("Logged out successfully!");
+          window.location.href = "login.html";
+        })
+        .catch((error) => {
+          console.error("Logout error:", error);
+        });
+    });
+  </script>
+</body>
+</html>
